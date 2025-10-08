@@ -1,3 +1,5 @@
+## RESULTAT ACTUEL : 403 Forbidden. Les accès semblent ok mais pas le droit d'accès au dossier.
+
 docker pull nginx:1.29.2
 docker pull php:fpm
 docker pull mariadb:latest
@@ -12,3 +14,12 @@ docker container run -d -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=site -e MY
 
 # We add mysqli extension to php-fpm
 docker container exec -it script2 docker-php-ext-install mysqli
+
+docker container cp http2:/etc/nginx/conf.d/default.conf ./config/default.conf
+
+# Modification du fichier default.conf à la main sur VSCode pour ajouter le support de PHP.
+
+docker container cp ./config/default.conf http2:/etc/nginx/conf.d/default.conf
+
+docker container cp ./monsite/ script2:/var/www/html/
+
