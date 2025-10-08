@@ -1,0 +1,36 @@
+services:
+  http3:
+    image: apache:latest
+    ports:
+      - "8082:80"
+    volumes:
+      - .:/usr/local/apache2/htdocs/
+    networks:
+      - reseau3
+
+  script3:
+    image: php:fpm
+    volumes:
+      - .:/app
+    networks:
+      - reseau3
+    build:
+      context: .
+      dockerfile: Dockerfile-php
+
+  data3:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: site
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MARIADB_RANDOM_ROOT_PASSWORD: 'yes'
+    volumes:
+      - ./create.sql:/docker-entrypoint-initdb.d/create.sql
+    networks:
+      - reseau3
+
+networks:
+  reseau3:
+    driver: bridge
