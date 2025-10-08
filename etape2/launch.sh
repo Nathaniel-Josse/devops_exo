@@ -1,10 +1,10 @@
-docker pull apache:latest
+docker pull nginx:1.29.2
 docker pull php:fpm
 docker pull mariadb:latest
 
 docker network create reseau2
 
-docker container run -d -p 8081:80 -v .:/usr/local/apache2/htdocs/ --name http2 --network reseau2 apache:latest
+docker container run -d -p 8081:80 -v .:/usr/share/nginx/html --name http2 --network reseau2 nginx:1.29.2
 
 docker container run -d -v .:/app --name script2 --network reseau2 php:fpm
 
@@ -12,4 +12,3 @@ docker container run -d -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=site -e MY
 
 # We add mysqli extension to php-fpm
 docker container exec -it script2 docker-php-ext-install mysqli
-
